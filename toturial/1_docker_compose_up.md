@@ -3,19 +3,25 @@
 在视频中，我们将会介绍服务端和客户端的下载和安装过程，以及如何配置和启动服务器。我们还将演示如何注册账号和修改客户端IP，以登陆进入游戏。
 
 # 一、服务端
-1. 下载并安装 Docker Desktop
-https://www.docker.com/products/docker-desktop/
+连上ssh
+1.部署
+进入docker
+cd /volume1/docker
+git clone https://github.com/azerothcore/acore-docker
+cd acore-docker
+docker-compose up -d
 
-2. 下载 acore-docker 项目
-https://github.com/azerothcore/acore-docker
-
-3. 进入 acore-docker 并打开终端，输入下面这个神奇的指令，服务器就启动好了
-docker compose up -d
-
-4. 注册账号
-打开一个终端，输入下面的指令
+2.注册
 docker attach acore-docker-ac-worldserver-1
-account create {user} {password} {confirm password}
+account create admin admin
+
+3.修改配置文件
+修改数据库的认证服务器地址
+docker ps
+查看mysql数据库容器ID
+docker exec -it ID bash
+mysql -h127.0.0.1 -uroot -ppassword -e "update acore_auth.realmlist set address='服务器IP地址' where id=1"
+exit
 
 # 2 客户端
 ## 2.1 下载客户端
@@ -25,7 +31,7 @@ account create {user} {password} {confirm password}
 * [英文版客户端](https://zremax.com/blog/wotlk-3-3-5-client-download-wrath-of-the-lich-king-client/)
 
 ## 2.2 修改服务器IP
-打开客户端里的 `Data/zh-TW/realmlist.wtf` 文件，把IP改为 `127.0.0.1`
+打开客户端里的 `Data/zh-TW/realmlist.wtf` 文件，把IP改为 `服务器IP`
 
 # 3 项目简介
 1. 开源的，项目地址：https://github.com/azerothcore/azerothcore-wotlk
